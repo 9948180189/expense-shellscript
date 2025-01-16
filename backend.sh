@@ -61,5 +61,21 @@ rm -rf /app/*
 unzip /tmp/backend.zip
 VALIDATE $? "Extracting code for backend application"
 
-npm install
+npm install &>>$LOG_FILE
 cp /home/ec2-user/expense-shellscript/backend.service /etc/systemd/system/backend.service
+
+dnf install mysql -y &>>$LOG_FILE
+VALIDATE $? "istall Mysql for backend application"
+
+mysql -h 172.31.90.163 -uroot -pExpenseApp@1 < /app/schema/backend.sql &>>$LOG_FILE
+VALIDATE $? "schema loading is sucessful"
+
+systemctl daemon-reload &>>$LOG_FILE
+VALIDATE $? "daemon reload"
+
+systemctl enable backend &>>$LOG_FILE
+VALIDATE $? "enabled backend"
+
+systemctl restart backend &>>$LOG_FILE
+VALIDATE $? "re-start backend"
+
