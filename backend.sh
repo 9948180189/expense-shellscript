@@ -48,4 +48,14 @@ then
     VALIDATE $? "creating expense user"
 else 
     echo -e "expense user Already exits.. $Y SKIPPING $N" 
-fi    
+fi   
+
+mkdir -p /app
+VALIDATE $? "creating app folder"
+
+curl -o /tmp/backend.zip https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip &>>$LOG_FILE
+VALIDATE $? "Downloading code for backend application"
+
+cd /app
+unzip /tmp/backend.zip
+VALIDATE $? "Extracting code for backend application"
