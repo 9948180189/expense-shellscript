@@ -60,3 +60,6 @@ cd /app
 rm -rf /app/*
 unzip /tmp/backend.zip
 VALIDATE $? "Extracting code for backend application"
+
+npm install
+cp /home/ec2-user/expense-shellscript/backend.service /etc/systemd/system/backend.service
